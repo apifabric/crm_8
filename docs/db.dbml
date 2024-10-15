@@ -1,0 +1,103 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+
+Table Account {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    balance FLOAT 
+    }
+
+Table Customer {
+    id INTEGER [primary key]
+    name VARCHAR(100) 
+    email VARCHAR(100) 
+    phone VARCHAR(50) 
+    address TEXT 
+    membership_since DATETIME 
+    }
+
+Table Contact {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    contact_type VARCHAR(50) 
+    value VARCHAR(100) 
+    }
+
+Table CustomerInteraction {
+    id INTEGER [primary key]
+    employee_id INTEGER 
+    customer_id INTEGER 
+    interaction_date DATETIME 
+    notes TEXT 
+    }
+
+Table Employee {
+    id INTEGER [primary key]
+    name VARCHAR(100) 
+    role VARCHAR(50) 
+    }
+
+Table Order {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    order_date DATETIME 
+    total_amount FLOAT 
+    }
+
+Table OrderDetail {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    product_id INTEGER 
+    quantity INTEGER 
+    price_per_unit FLOAT 
+    }
+
+Table Product {
+    id INTEGER [primary key]
+    name VARCHAR(100) 
+    price FLOAT 
+    stock_quantity INTEGER 
+    }
+
+Table Payment {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    amount FLOAT 
+    payment_date DATETIME 
+    }
+
+Table ProductVendor {
+    id INTEGER [primary key]
+    product_id INTEGER 
+    vendor_id INTEGER 
+    }
+
+Table Vendor {
+    id INTEGER [primary key]
+    name VARCHAR(100) 
+    contact_name VARCHAR(100) 
+    contact_email VARCHAR(100) 
+    }
+
+Table Subscription {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    plan_name VARCHAR(100) 
+    monthly_fee FLOAT 
+    start_date DATETIME 
+    }
+
+
+
+// Relationships
+    Ref: Account.(customer_id) < Customer.(id)
+    Ref: Contact.(customer_id) < Customer.(id)
+    Ref: CustomerInteraction.(customer_id) < Customer.(id)
+    Ref: CustomerInteraction.(employee_id) < Employee.(id)
+    Ref: Order.(customer_id) < Customer.(id)
+    Ref: OrderDetail.(order_id) < Order.(id)
+    Ref: OrderDetail.(product_id) < Product.(id)
+    Ref: Payment.(order_id) < Order.(id)
+    Ref: ProductVendor.(product_id) < Product.(id)
+    Ref: ProductVendor.(vendor_id) < Vendor.(id)
+    Ref: Subscription.(customer_id) < Customer.(id)

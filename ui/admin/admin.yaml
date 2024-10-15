@@ -1,0 +1,350 @@
+about:
+  date: October 15, 2024 15:37:54
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 11
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Account:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: balance
+      required: true
+    description: Represents financial accounts associated with customers.
+    info_list: Represents financial accounts associated with customers.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Account
+    user_key: id
+  Contact:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: contact_type
+      required: true
+    - name: value
+      required: true
+    description: Represents contacts associated with customers.
+    info_list: Represents contacts associated with customers.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Contact
+    user_key: id
+  Customer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+    - name: phone
+    - name: address
+    - name: membership_since
+      required: true
+    - name: id
+    description: Represents customers in the CRM system.
+    info_list: Represents customers in the CRM system.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: AccountList
+      resource: Account
+    - direction: tomany
+      fks:
+      - customer_id
+      name: ContactList
+      resource: Contact
+    - direction: tomany
+      fks:
+      - customer_id
+      name: CustomerInteractionList
+      resource: CustomerInteraction
+    - direction: tomany
+      fks:
+      - customer_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - customer_id
+      name: SubscriptionList
+      resource: Subscription
+    type: Customer
+    user_key: name
+  CustomerInteraction:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: employee_id
+      required: true
+    - name: interaction_date
+    - name: notes
+    description: Represents interactions between employees and customers.
+    info_list: Represents interactions between employees and customers.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - employee_id
+      name: employee
+      resource: Employee
+    type: CustomerInteraction
+    user_key: id
+  Employee:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: role
+      required: true
+    - name: id
+    description: Represents employees who manage customer interactions.
+    info_list: Represents employees who manage customer interactions.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - employee_id
+      name: CustomerInteractionList
+      resource: CustomerInteraction
+    type: Employee
+    user_key: name
+  Order:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: order_date
+    - name: total_amount
+      required: true
+    description: Represents orders made by customers.
+    info_list: Represents orders made by customers.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: OrderDetailList
+      resource: OrderDetail
+    - direction: tomany
+      fks:
+      - order_id
+      name: PaymentList
+      resource: Payment
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Order
+    user_key: id
+  OrderDetail:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: product_id
+      required: true
+    - name: quantity
+      required: true
+    - name: price_per_unit
+      required: true
+    description: Represents the details of each product within an order.
+    info_list: Represents the details of each product within an order.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: OrderDetail
+    user_key: id
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: amount
+      required: true
+    - name: payment_date
+    description: Represents customer payments for orders.
+    info_list: Represents customer payments for orders.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Payment
+    user_key: id
+  Product:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: price
+      required: true
+    - name: stock_quantity
+      required: true
+    - name: id
+    description: Represents products available for purchase.
+    info_list: Represents products available for purchase.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - product_id
+      name: OrderDetailList
+      resource: OrderDetail
+    - direction: tomany
+      fks:
+      - product_id
+      name: ProductVendorList
+      resource: ProductVendor
+    type: Product
+    user_key: name
+  ProductVendor:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: product_id
+      required: true
+    - name: vendor_id
+      required: true
+    description: Represents the association between products and vendors.
+    info_list: Represents the association between products and vendors.
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    - direction: toone
+      fks:
+      - vendor_id
+      name: vendor
+      resource: Vendor
+    type: ProductVendor
+    user_key: id
+  Subscription:
+    attributes:
+    - label: ' plan_name*'
+      name: plan_name
+      required: true
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: monthly_fee
+      required: true
+    - name: start_date
+      required: true
+    - name: id
+    description: Represents subscription plans customers can enroll in.
+    info_list: Represents subscription plans customers can enroll in.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Subscription
+    user_key: plan_name
+  Vendor:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: contact_name
+    - name: contact_email
+    - name: id
+    description: Represents suppliers or vendors providing products.
+    info_list: Represents suppliers or vendors providing products.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - vendor_id
+      name: ProductVendorList
+      resource: ProductVendor
+    type: Vendor
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
